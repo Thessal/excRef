@@ -8,7 +8,7 @@ Check out main.py
 ```
 bibliography = {
     "some_index_1": "Some title, Author, Journal, Kewords,... ",
-    "some_index_2": "Some title, Author, Journal, Kewords,... "
+    "some_index_2": "Some title, Author, Journal, Kewords,... ",
     "some_index_3": "Some title, Author, Journal, Kewords,... "
 }
 gather(bibliography, target_lang="ko")
@@ -16,8 +16,6 @@ gather(bibliography, target_lang="ko")
 
 ## Dependency
 * Python 3.9.0 
-
-
 * scholarly 
 * title2bib
 * scidownl
