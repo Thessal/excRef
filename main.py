@@ -20,16 +20,25 @@ def _get_pdf(k, title):
     # Normalize title
     google_search = scholarly.search_pubs(title)
     google_result = next(google_search)
-    title = google_result['bib']['title'] + ' ' + (' '.join(google_result['bib']['author']))
-    # Get DOI
     print(title)
-    found, bib_string = get_bib_from_title(title)
+    title = google_result['bib']['title'] + ' ' + (' '.join(google_result['bib']['author']))
+    print(title)
+    # Get DOI
+    try:
+        found, bib_string = get_bib_from_title(title)
+    except Exception as e:
+        print("Error while getting DOI", e)
+        return None
     # Download
     if found:
         bib = bibtexparser.loads(bib_string).entries
         if bib and ("doi" in bib[0]) and (bib[0]['ENTRYTYPE'] == 'article'):
             doi = bib[0]["doi"]
-            SciHub(doi, out_dir(k)).download(choose_scihub_url_index=3)
+            try:
+                SciHub(doi, out_dir(k)).download(choose_scihub_url_index=3)
+            except Exception as e:
+                print("Error while downloading", e)
+                return None
             pdf = os.path.join(out_dir(k), os.listdir(out_dir(k))[0]) if os.listdir(out_dir(k)) else None
             return pdf
         else:
@@ -47,7 +56,7 @@ def _set_summarizer():
     return lambda text: auto_abstractor.summarize(text, abstractable_doc)["summarize_result"]
 
 
-def gather(bibliography, target_lang):
+def gather(bibliography, target_lang, skip_download=False):
     summarize = _set_summarizer()
     translator = Translator()
 
@@ -62,7 +71,11 @@ def gather(bibliography, target_lang):
         print(text)
         print("====")
 
+
 bibliography = {
-    "ch_1_1": "Plasmonic structure"
+    "12_1": "",
 }
-gather(bibliography, target_lang="ko")
+
+gather(bibliography, target_lang="ko", skip_download=False)
+# gather(bibliography, target_lang="ko", skip_download=True)
+

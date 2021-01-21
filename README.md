@@ -3,6 +3,8 @@ Automatic reference tracking.
 
 Converts bibliography into summarized and translated text
 
+**Please note that this script processes pdf files from untrusted sources.**
+
 ## Usage
 Check out main.py
 ```
